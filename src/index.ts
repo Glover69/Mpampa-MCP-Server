@@ -1,6 +1,7 @@
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { getAllProducts } from "./tools/products.ts";
+import {getAllProducts, getAProduct} from "./tools/products.ts";
+import {z} from "zod";
 
 // Create server instance
 const server = new McpServer({
@@ -29,8 +30,32 @@ const server = new McpServer({
              ],
          }
      }
-
  )
+
+server.registerTool(
+    "get_one_product",
+    {
+        description: "Fetch the information for a particular product. If the name is made up of one or more words, break it down to smaller letters and put hyphens" +
+            "in between the words",
+        inputSchema: z.object({
+            productID: z
+                .string()
+                .describe("The product ID for the item being searched for")
+        }),
+    },
+    async ( call ) => {
+        const result = await getAProduct(call.productID);
+
+        return {
+            content: [
+                {
+                    type: "text",
+                    text: JSON.stringify(result, null, 2),
+                },
+            ],
+        }
+    }
+)
 
 
 async function main() {
