@@ -3,7 +3,7 @@
 
 
 // Configuration
-import type {Product} from "../types/data.ts";
+import type {InitializeTransactionResponse, Order, OrderResponse, Product} from "../types/data.ts";
 
 const API_BASE_URL = 'http://localhost:8080/api';
 
@@ -55,6 +55,30 @@ class BackendAPI {
 
     async getProductById(productId: string): Promise<Product> {
         return this.customRequest<Product>(`/products/one?productID=${productId}`);
+    }
+
+
+    // Order
+    async initiatePayment(amount: number, email: string, split_code: string, phoneNumber: string, network: string): Promise<InitializeTransactionResponse>{
+        const body = {
+            amount,
+            email,
+            split_code,
+            phoneNumber,
+            network
+        }
+
+        return this.customRequest<InitializeTransactionResponse>(`/orders/paystack/charge`, {
+            method: 'POST',
+            body: JSON.stringify(body)
+        })
+    }
+
+    async addToTemporaryCart(order: Partial<Order>): Promise<OrderResponse> {
+        return this.customRequest<OrderResponse>(`/orders/temporary`, {
+            method: 'POST',
+            body: JSON.stringify(order),
+        });
     }
 
 

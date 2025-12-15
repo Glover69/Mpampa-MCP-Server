@@ -81,3 +81,22 @@ export interface Variations {
     price: number;
     stock: number;
 }
+
+
+
+export interface OrderResponse {
+    message: string,
+    order: Order
+}
+
+export interface InitializeTransactionResponse {
+    status: boolean;
+    message: string;
+    data: Data;
+}
+
+export interface Data {
+    authorization_url: string;
+    access_code: string;
+    reference: string;
+}
