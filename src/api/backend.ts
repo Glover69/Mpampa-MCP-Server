@@ -1,17 +1,22 @@
 
 
-
-
 // Configuration
-import type {InitializeTransactionResponse, Order, OrderResponse, Product} from "../types/data.ts";
+import type {
+    Order,
+    OrderResponse,
+    PaystackChargeResponse,
+    Product
+} from "../types/data.ts";
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = process.env.API_BASE_URL;
+
+
 
 
 class BackendAPI {
-    private baseUrl: string;
+    private baseUrl: string | undefined;
 
-    constructor(baseUrl: string) {
+    constructor(baseUrl: string | undefined) {
         this.baseUrl = baseUrl;
     }
 
@@ -59,7 +64,7 @@ class BackendAPI {
 
 
     // Order
-    async initiatePayment(amount: number, email: string, split_code: string, phoneNumber: string, network: string): Promise<InitializeTransactionResponse>{
+    async initiatePayment(amount: number, email: string, split_code: string | undefined, phoneNumber: string, network: string): Promise<PaystackChargeResponse>{
         const body = {
             amount,
             email,
@@ -68,7 +73,7 @@ class BackendAPI {
             network
         }
 
-        return this.customRequest<InitializeTransactionResponse>(`/orders/paystack/charge`, {
+        return this.customRequest<PaystackChargeResponse>(`/orders/paystack/charge`, {
             method: 'POST',
             body: JSON.stringify(body)
         })

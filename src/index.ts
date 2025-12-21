@@ -101,15 +101,15 @@ server.registerTool(
     async ( call ) => {
 
         // Test split code
-        const split_code = "SPL_8rr6YuRtKd";
+        const split_code = process.env.SPLIT_CODE_TEST;
         const resOne = await initiatePayment((call.totalAmount * 100), call.shippingAddress.email, split_code, call.shippingAddress.phone, call.network)
 
         if (!resOne.success) {
             throw new Error("Failed to initiate payment");
         }
 
-        if (resOne.data?.reference){
-            call.transactionReference = resOne.data?.reference;
+        if (resOne.data?.data.data.reference){
+            call.transactionReference = resOne.data?.data.data.reference;
         }
 
         const result = await orderItems(call);

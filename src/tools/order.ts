@@ -1,4 +1,4 @@
-import type {Data, InitializeTransactionResponse, Order} from "../types/data.ts";
+import type {Data, InitializeTransactionResponse, Order, PaystackChargeResponse} from "../types/data.ts";
 import {apiClient} from "../api/backend.ts";
 
 
@@ -17,11 +17,11 @@ export async function orderItems(order: Partial<Order>){
     }
 }
 
-export async function initiatePayment(amount: number, email: string, split_code: string, phoneNumber: string, network: string): Promise<{
+export async function initiatePayment(amount: number, email: string, split_code: string | undefined, phoneNumber: string, network: string): Promise<{
     message: string;
     status: boolean;
     success: boolean;
-    data?: Data;
+    data?: PaystackChargeResponse;
 }>{
 
     try {
@@ -29,7 +29,7 @@ export async function initiatePayment(amount: number, email: string, split_code:
         return {
             message: res.message, status: false,
             success: true,
-            data: res.data
+            data: res
         };
     } catch (error: any) {
         return {
