@@ -1,17 +1,22 @@
 
 
-
-
 // Configuration
-import type {Product} from "../types/data.ts";
+import type {
+    Order,
+    OrderResponse,
+    PaystackChargeResponse,
+    Product
+} from "../types/data.ts";
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = process.env.API_BASE_URL;
+
+
 
 
 class BackendAPI {
-    private baseUrl: string;
+    private baseUrl: string | undefined;
 
-    constructor(baseUrl: string) {
+    constructor(baseUrl: string | undefined) {
         this.baseUrl = baseUrl;
     }
 
@@ -55,6 +60,30 @@ class BackendAPI {
 
     async getProductById(productId: string): Promise<Product> {
         return this.customRequest<Product>(`/products/one?productID=${productId}`);
+    }
+
+
+    // Order
+    async initiatePayment(amount: number, email: string, split_code: string | undefined, phoneNumber: string, network: string): Promise<PaystackChargeResponse>{
+        const body = {
+            amount,
+            email,
+            split_code,
+            phoneNumber,
+            network
+        }
+
+        return this.customRequest<PaystackChargeResponse>(`/orders/paystack/charge`, {
+            method: 'POST',
+            body: JSON.stringify(body)
+        })
+    }
+
+    async addToTemporaryCart(order: Partial<Order>): Promise<OrderResponse> {
+        return this.customRequest<OrderResponse>(`/orders/temporary`, {
+            method: 'POST',
+            body: JSON.stringify(order),
+        });
     }
 
 

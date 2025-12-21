@@ -15,3 +15,19 @@ export async function getAllProducts() {
         };
     }
 }
+
+
+export async function getAProduct(productID: string){
+    try {
+        const res = await apiClient.getProductById(productID);
+        return {
+            success: true,
+            data: res,
+        };
+    } catch (error){
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Unknown error',
+        };
+    }
+}
