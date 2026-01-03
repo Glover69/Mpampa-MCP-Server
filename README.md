@@ -30,14 +30,14 @@ AI: [adds to cart] Added! Your cart total is now GHS 35.00
 
 - **`get_one_product`** - This tool fetches more details about a specific product you ask of. So for example, in the screenshot below, our prompt asked Claude to find more information about Tom Brown. All information provided is directly from Mpampa Cereals' systems. (src/assets/screenshots/get-products.png)
 
-- **`place_order`** - The tool that does the magic 🪄 after all information has been collected. So you could tell Claude to order a product for you, and it'll go ahead and use this tool to do that, but before it does that, it'll prompt you to input details like your phone number, address and email just so the output appears the same compared to orders made on the website (src/assets/screenshots/get-products.png)
+- **`place_order`** - The tool that does the magic 🪄 after all information has been collected. So you could tell Claude to order a product for you, and it'll go ahead and use this tool to do that, but before it does that, it'll prompt you to input details like your phone number, address and email just so the output appears the same compared to orders made on the website (.src/assets/screenshots/get-products.png)
 
 ![NB: The phone number shown in the screenshot is a test phone number from Paystack]
 
 
-## How the payment side of things work
+## 💳 How the payment side of things work
 
-- So because this is all in test mode now, as mentioned earlier, we use the test phone number from Paystack to see how things work. Now the website uses the **Initialize Payment API**, where users are redirected to a gateway to input their phone number and make payment. That requires human interaction and because this is an LLM, we can't render the gateway for the user to have the same flow (at least we don't know of any way)
+So because this is all in test mode now, as mentioned earlier, we use the test phone number from Paystack to see how things work. Now the website uses the **Initialize Payment API**, where users are redirected to a gateway to input their phone number and make payment. That requires human interaction and because this is an LLM, we can't render the gateway for the user to have the same flow (at least we don't know of any way)
 
 And so we take another approach: Paystack has a **Charge API**, where users just would have to add their mobile money provider (that's the only channel we support for the mean time) to the additional information they provide before Claude uses the **`place_order`** tool. In the mean time, because it's the test number, the test payment goes through and the order is successful (as we saw in the previous screenshot)
 
