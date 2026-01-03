@@ -79,6 +79,18 @@ class BackendAPI {
         })
     }
 
+    async verifyOTP(otp: string, reference: string): Promise<PaystackChargeResponse>{
+        const body = {
+            otp,
+            reference
+        }
+
+        return this.customRequest<PaystackChargeResponse>(`/orders/paystack/submit-otp`, {
+            method: 'POST',
+            body: JSON.stringify(body)
+        })
+    }
+
     async addToTemporaryCart(order: Partial<Order>): Promise<OrderResponse> {
         return this.customRequest<OrderResponse>(`/orders/temporary`, {
             method: 'POST',

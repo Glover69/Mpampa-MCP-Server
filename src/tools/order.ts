@@ -39,3 +39,28 @@ export async function initiatePayment(amount: number, email: string, split_code:
         };
     }
 }
+
+
+export async function submitOTP(otp: string, reference: string): Promise<{
+    message: string;
+    status: boolean;
+    success: boolean;
+    data?: PaystackChargeResponse;
+}>{
+
+    try {
+        const res = await apiClient.verifyOTP(otp, reference)
+        return {
+            message: res.message, status: false,
+            success: true,
+            data: res
+        };
+    } catch (error: any) {
+        return {
+            message: error.message || "Unknown error",
+            success: false,
+            status: false,
+        };
+    }
+
+}
