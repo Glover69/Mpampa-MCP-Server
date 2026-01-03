@@ -25,14 +25,19 @@ AI: [adds to cart] Added! Your cart total is now GHS 35.00
 
 ## 🎯 Available Tools
 
-- There are three main tools being used right now to make this possible:
-- **`get_products`** - This one fetches all products, their variations, ingredients and prices from Mpampa Cereals (src/assets/screenshots/get-products.png)
+There are three main tools being used right now to make this possible:
+- **`get_products`** - This one fetches all products, their variations, ingredients and prices from Mpampa Cereals
 
-- **`get_one_product`** - This tool fetches more details about a specific product you ask of. So for example, in the screenshot below, our prompt asked Claude to find more information about Tom Brown. All information provided is directly from Mpampa Cereals' systems. (src/assets/screenshots/get-products.png)
+  ![Get All Products](./src/assets/screenshots/get-products.png)
 
-- **`place_order`** - The tool that does the magic 🪄 after all information has been collected. So you could tell Claude to order a product for you, and it'll go ahead and use this tool to do that, but before it does that, it'll prompt you to input details like your phone number, address and email just so the output appears the same compared to orders made on the website (.src/assets/screenshots/get-products.png)
+- **`get_one_product`** - This tool fetches more details about a specific product you ask of. So for example, in the screenshot below, our prompt asked Claude to find more information about Tom Brown. All information provided is directly from Mpampa Cereals' systems.
 
-![NB: The phone number shown in the screenshot is a test phone number from Paystack]
+  ![Get A Specific Product](./src/assets/screenshots/get-a-product.png)
+
+- **`place_order`** - The tool that does the magic 🪄 after all information has been collected. So you could tell Claude to order a product for you, and it'll go ahead and use this tool to do that, but before it does that, it'll prompt you to input details like your phone number, address and email just so the output appears the same compared to orders made on the website.
+
+  ![Place an Order](./src/assets/screenshots/place-order.png)
+
 
 
 ## 💳 How the payment side of things work
@@ -43,4 +48,4 @@ And so we take another approach: Paystack has a **Charge API**, where users just
 
 ## Demo
 
-- Just a quick demo to show how it works in practice
+Just a quick demo to show how it works in practice
