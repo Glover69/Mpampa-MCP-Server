@@ -36,7 +36,7 @@ There are three main tools being used right now to make this possible:
 
 - **`place_order`** - The tool that does the magic 🪄 after all information has been collected. So you could tell Claude to order a product for you, and it'll go ahead and use this tool to do that, but before it does that, it'll prompt you to input details like your phone number, address and email just so the output appears the same compared to orders made on the website.
 
-  ![Place an Order](./src/assets/screenshots/palce-order.png)
+  ![Place an Order](./src/assets/screenshots/place-order.png)
 
 
 
@@ -49,3 +49,5 @@ And so we take another approach: Paystack has a **Charge API**, where users just
 ## Demo
 
 Just a quick demo to show how it works in practice
+
+ ![Place an Order](https://awsmpampabucket.s3.eu-north-1.amazonaws.com/mpampa-mcp-demo.mov)
