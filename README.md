@@ -44,7 +44,9 @@ There are three main tools being used right now to make this possible:
 
 So because this is all in test mode now, as mentioned earlier, we use the test phone number from Paystack to see how things work. Now the website uses the **Initialize Payment API**, where users are redirected to a gateway to input their phone number and make payment. That requires human interaction and because this is an LLM, we can't render the gateway for the user to have the same flow (at least we don't know of any way)
 
-And so we take another approach: Paystack has a **Charge API**, where users just would have to add their mobile money provider (that's the only channel we support for the mean time) to the additional information they provide before Claude uses the **`place_order`** tool. In the mean time, because it's the test number, the test payment goes through and the order is successful (as we saw in the previous screenshot)
+And so we take another approach: Paystack has a **Charge API**, where users just would have to add their mobile money provider (that's the only channel we support for the mean time) to the additional information they provide before Claude uses the **`place_order`** tool. In the mean time, because it's the test number, the test payment goes through and the charge is initiated
+
+But before the transfer is successful and the order is placed, an OTP is sent to the customer after the charge, and Claude will prompt them to input the OTP they received on their phone. After inputting, when its verified using the **`verify_otp_and_complete_order`**  tool (by typing your MoMo pin into the next prompt that comes up), then everything goes through and the payment is successful.
 
 ## Demo
 
