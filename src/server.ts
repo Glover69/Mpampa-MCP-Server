@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { getAllProducts, getAProduct } from "./tools/products.ts";
 import { z } from "zod";
-import { initiatePayment, orderItems } from "./tools/order.ts";
+import { initiatePayment, orderItems, submitOTP } from "./tools/order.ts";
 
 // Create server instance
 export function createServer() {
@@ -93,6 +93,23 @@ export function createServer() {
     paymentStatus: z.any().default("pending"),
   });
 
+  const VerifyOTPInputSchema = z.object({
+    transactionReference: z.string().describe("The transaction reference from the charge just created"),
+    otp: z.string().describe("The OTP code received by the user"),
+    orderData: z.object({
+        customerID: z.string().optional(),
+        items: z.array(ItemsSchema).min(1, "Order must have at least one item"),
+        shippingAddress: ShippingAddressSchema,
+        deliveryCost: z.number().nonnegative().optional(),
+        discount: z.number().nonnegative().optional(),
+        totalAmount: z.number().nonnegative().describe(
+        "Calculate the total amount for the order and place the value here."
+        ),
+        orderStatus: z.any().default("pending"),
+        paymentStatus: z.any().default("pending"),
+  }).describe("The original order data we got from the user and submitted to the place_order tool"),
+  });
+
   server.registerTool(
     "place_order",
     {
@@ -104,7 +121,7 @@ export function createServer() {
     },
     async (call) => {
       // Test split code
-      const split_code = process.env.SPLIT_CODE_TEST;
+      const split_code = process.env.SPLIT_CODE_PROD;
       const resOne = await initiatePayment(
         call.totalAmount * 100,
         call.shippingAddress.email,
@@ -117,22 +134,61 @@ export function createServer() {
         throw new Error("Failed to initiate payment");
       }
 
-      if (resOne.data?.data.data.reference) {
-        call.transactionReference = resOne.data?.data.data.reference;
-      }
+      const transactionReference = resOne.data?.data.data.reference;
 
-      const result = await orderItems(call);
+      if (!transactionReference) {
+        throw new Error("No transaction reference received")
+      }
 
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2),
+            text: JSON.stringify({
+            message: "Payment initiated successfully. An OTP has been sent to the customer's phone.",
+            transactionReference: transactionReference,
+            nextStep: "Please ask the user for the OTP code and use the 'verify_otp_and_complete_order' tool to complete the order.",
+          }, null, 2),
           },
         ],
       };
     }
   );
+
+  server.registerTool(
+    "verify_otp_and_complete_order",
+    {
+      description: "Verify the OTP provided by the user after initiating the charge, and complete" +
+      "the order placement if verification is successful.",
+      inputSchema: VerifyOTPInputSchema,
+    },
+    async (call) => {
+
+      const verificationRes = await submitOTP(call.otp, call.transactionReference);
+
+      if (!verificationRes.success) {
+      throw new Error("OTP verification failed. Please check the code and try again.");
+      }
+
+      // Now complete the order
+      const orderData = {
+        ...call.orderData,
+        transactionReference: call.transactionReference,
+      }
+
+      const result = await orderItems(orderData);
+
+      return {
+        content: [{
+          type: "text",
+          text: JSON.stringify({
+            message: "Order placed successfully!",
+            orderDetails: result,
+          }, null, 2)
+        }]
+      }
+    }
+  )
 
   return server
 }
