@@ -50,4 +50,4 @@ And so we take another approach: Paystack has a **Charge API**, where users just
 
 Just a quick demo to show how it works in practice
 
- ![Place an Order](https://awsmpampabucket.s3.eu-north-1.amazonaws.com/mpampa-mcp-demo.mov)
+<video src="https://awsmpampabucket.s3.eu-north-1.amazonaws.com/mpampa-mcp-demo.mov" controls width="800"></video>
