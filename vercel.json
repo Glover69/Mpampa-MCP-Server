@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/**/*.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "env": {
+    "SPLIT_CODE_TEST": "SPL_8rr6YuRtKd",
+    "API_BASE_URL": "https://mpampa-backend-v2.vercel.app/api"
+  }
+}

@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+.bun/
+
+# Build outputs
+dist/
+*.log
+
+# Development files
+.git/
+.gitignore
+.env.local
+.env.*.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation
+README.md
+*.md
+!README.md
+
+# Tests
+**/*.test.ts
+**/*.spec.ts
+__tests__/
+coverage/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Misc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+bun-debug.log*
