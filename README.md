@@ -25,7 +25,7 @@ AI: [adds to cart] Added! Your cart total is now GHS 35.00
 
 ## 🎯 Available Tools
 
-There are three main tools being used right now to make this possible:
+There are four (4) main tools being used right now to make this possible:
 - **`get_products`** - This one fetches all products, their variations, ingredients and prices from Mpampa Cereals
 
   ![Get All Products](./src/assets/screenshots/get-products.png)
@@ -34,10 +34,13 @@ There are three main tools being used right now to make this possible:
 
   ![Get A Specific Product](./src/assets/screenshots/get-a-product.png)
 
-- **`place_order`** - The tool that does the magic 🪄 after all information has been collected. So you could tell Claude to order a product for you, and it'll go ahead and use this tool to do that, but before it does that, it'll prompt you to input details like your phone number, address and email just so the output appears the same compared to orders made on the website.
+- **`place_order`** - The tool that does most of the magic 🪄 after all information has been collected. So you could tell Claude to order a product for you, and it'll go ahead and use this tool to do that, but before it does that, it'll prompt you to input details like your phone number, address and email just so the output appears the same compared to orders made on the website. After that it initiates a charge to your phone number using Paystack's `Charge API`, and an OTP is sent to the user
 
   ![Place an Order](./src/assets/screenshots/place-order.png)
 
+- **`verify_otp_and_complete_order`** - Now this tool validates the OTP that the user provides after the charge has been initiated. Once it has been verified and it is correct, the user gets a MoMo prompt to actually finalize the transaction. It then hits our custom webhook endpoint which validates whether the money has actually been received from the user. When everything is successful the order is placed and the money is debited from the user's account, and they're sent a receipt as proof.
+
+  
 
 
 ## 💳 How the payment side of things work
@@ -52,4 +55,5 @@ But before the transfer is successful and the order is placed, an OTP is sent to
 
 Just a quick demo to show how it works in practice
 
+Video coming soon...
 <video src="https://awsmpampabucket.s3.eu-north-1.amazonaws.com/mpampa-mcp-demo.mov" controls width="800"></video>
